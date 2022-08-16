@@ -52,7 +52,7 @@ class AuthController extends Controller
 
     protected function createNewToken($token){
         return response()->json([
-            'token_type' => 'bearer',
+            'token' => $token,
             'user' => auth()->user()
         ]);
     }
