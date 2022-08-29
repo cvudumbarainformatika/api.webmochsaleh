@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Carousel extends Model
+class Staf extends Model
 {
     use HasFactory;
-
     protected $guarded = ['id'];
+
+    public function app()
+    {
+        return $this->belongsTo(App::class);
+    }
 }

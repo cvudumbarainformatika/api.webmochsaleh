@@ -21,9 +21,15 @@ class AppResource extends JsonResource
             'alamat' => $this->alamat,
             'desc' => $this->desc,
             'phone' => $this->phone,
+            'email' => $this->email,
             'link_fb' => $this->link_fb,
+            'link_map' => $this->link_map,
             'link_instagram' => $this->link_instagram,
             'link_youtube' => $this->link_youtube,
+            'section_one'=>$this->section_one,
+            'section_two'=>$this->section_two,
+            'themes'=>$this->themes,
+            'staf'=> $this->whenLoaded('staf'),
         ];
     }
 }

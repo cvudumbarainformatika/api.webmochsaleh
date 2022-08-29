@@ -21,9 +21,14 @@ class CreateAppsTable extends Migration
             $table->string('alamat')->nullable();
             $table->string('desc')->nullable();
             $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('link_fb')->nullable();
             $table->string('link_instagram')->nullable();
             $table->string('link_youtube')->nullable();
+            $table->string('link_map')->nullable();
+            $table->json('section_one')->nullable();
+            $table->json('section_two')->nullable();
+            $table->json('themes')->nullable();
             $table->timestamps();
         });
     }

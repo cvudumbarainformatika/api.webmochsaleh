@@ -13,7 +13,7 @@ class AutogenController extends Controller
 
     public function index()
     {
-        $tableName = 'apps';
+        $tableName = 'carousels';
         $data = Schema::getColumnListing($tableName);
 
         echo '<br>';
@@ -43,5 +43,6 @@ class AutogenController extends Controller
         // $upDir = 'uploads' . DIRECTORY_SEPARATOR . Carbon::now()->toDateString() . DIRECTORY_SEPARATOR;
         // Storage::makeDirectory($upDir);
         // echo $upDir;
+        echo url('/')."/storage";
     }
 }
