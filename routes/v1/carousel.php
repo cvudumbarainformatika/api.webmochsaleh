@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\api\v1\CarouselController;
+use App\Http\Controllers\Api\v1\CarouselController;
 use Illuminate\Support\Facades\Route;
 
 
