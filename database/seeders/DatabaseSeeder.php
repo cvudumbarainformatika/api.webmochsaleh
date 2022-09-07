@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\App;
+use App\Models\Category;
 use App\Models\Moto;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -60,6 +61,9 @@ class DatabaseSeeder extends Seeder
                 ['name'=>'negative', 'value'=>'#dc3545']
             ]
         ]);
+
+        Category::create(['nama'=>'Berita']);
+        Category::create(['nama'=>'Informasi']);
 
         // Moto::create([
         //     'name'=> 'PELAYANAN PASIEN',

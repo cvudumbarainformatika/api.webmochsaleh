@@ -13,7 +13,7 @@ class AutogenController extends Controller
 
     public function index()
     {
-        $tableName = 'carousels';
+        $tableName = 'galleries';
         $data = Schema::getColumnListing($tableName);
 
         echo '<br>';
