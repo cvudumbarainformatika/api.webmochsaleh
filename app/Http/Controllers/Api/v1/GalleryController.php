@@ -8,7 +8,6 @@ use App\Models\Gallery;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use PhpParser\Node\Stmt\TryCatch;
 
 class GalleryController extends Controller
 {

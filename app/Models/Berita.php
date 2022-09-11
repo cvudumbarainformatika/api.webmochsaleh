@@ -9,4 +9,9 @@ class Berita extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'kategori_berita', 'berita_id', 'category_id');
+    }
 }

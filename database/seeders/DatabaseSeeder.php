@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        Category::create(['nama'=>'Berita']);
+        Category::create(['nama'=>'Warta RSUD']);
         Category::create(['nama'=>'Informasi']);
 
         // Moto::create([

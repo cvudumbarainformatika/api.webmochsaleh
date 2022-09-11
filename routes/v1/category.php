@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')
 ->group(function () {
     Route::get('/categories', [CategoryController::class, 'index']);
-    // Route::post('/gallery/upload', [GalleryController::class, 'upload']);
+    Route::post('/store_category', [CategoryController::class, 'store']);
+    Route::post('/delete_category', [CategoryController::class, 'destroy']);
 });
 
 
