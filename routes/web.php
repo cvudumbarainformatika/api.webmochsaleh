@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\ScrapperController;
 use App\Http\Controllers\AutogenController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,5 @@ Route::get('/', function () {
 });
 Route::get('/autogen', [AutogenController::class, 'index']);
 Route::get('/autogen/coba', [AutogenController::class, 'coba']);
+
+Route::get('/scrapper/coba', [ScrapperController::class, 'index']);
