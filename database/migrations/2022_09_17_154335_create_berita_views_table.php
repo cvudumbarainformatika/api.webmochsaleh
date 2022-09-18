@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class CreateBeritaViewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('berita_views', function (Blueprint $table) {
             $table->id();
-            $table->string('nama')->nullable();
-            $table->string('url')->nullable();
+            $table->unsignedBigInteger('berita_id')->nullable();
+            $table->string("ip")->nullable();
+            $table->string("agent")->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('berita_views');
     }
 }

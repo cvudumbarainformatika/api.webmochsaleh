@@ -21,6 +21,8 @@ class CreateBeritasTable extends Migration
             $table->text('content')->nullable();
             $table->text('thumbnail')->nullable();
             $table->string('kategori')->nullable();
+            $table->tinyInteger('status')->default(1);
+            $table->bigInteger('views')->default(0);
             $table->timestamps();
         });
     }

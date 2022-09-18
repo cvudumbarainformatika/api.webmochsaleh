@@ -62,8 +62,8 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        Category::create(['nama'=>'Warta RSUD']);
-        Category::create(['nama'=>'Informasi']);
+        Category::create(['nama'=>'Warta RSUD', 'url'=>'warta-rsud']);
+        Category::create(['nama'=>'Informasi', 'url'=>'informasi' ]);
 
         // Moto::create([
         //     'name'=> 'PELAYANAN PASIEN',

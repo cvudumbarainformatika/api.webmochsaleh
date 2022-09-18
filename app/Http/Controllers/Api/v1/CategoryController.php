@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $data = Category::all('id','nama');
+        $data = Category::all('id','nama','url');
         return new JsonResponse($data);
     }
 
@@ -22,6 +22,7 @@ class CategoryController extends Controller
         if ($request->has('id')) {
             $data = Category::find($request->id);
             $data->nama = $request->nama;
+            $data->url = $request->url;
             $saved = $data->save();
             if (!$saved) {
                 return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
