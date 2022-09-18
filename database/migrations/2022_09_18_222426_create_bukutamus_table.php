@@ -18,7 +18,9 @@ class CreateBukutamusTable extends Migration
             $table->string('nama')->nullable();
             $table->string('email')->nullable();
             $table->text('pesan')->nullable();
-            $table->integer('ratings')->default(0);
+            $table->string("ip")->nullable();
+            $table->string("agent")->nullable();
+            $table->integer('ratings')->default(1);
             $table->timestamps();
         });
     }

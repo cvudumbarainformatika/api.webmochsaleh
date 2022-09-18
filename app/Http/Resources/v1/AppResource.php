@@ -16,6 +16,7 @@ class AppResource extends JsonResource
     {
         return [
             'logo' => $this->logo,
+            'banner' => $this->banner,
             'nama' => $this->nama,
             'title' => $this->title,
             'alamat' => $this->alamat,

@@ -16,6 +16,7 @@ class CreateAppsTable extends Migration
         Schema::create('apps', function (Blueprint $table) {
             $table->id();
             $table->text('logo')->nullable();
+            $table->text('banner')->nullable();
             $table->string('nama')->nullable();
             $table->string('title')->nullable();
             $table->string('alamat')->nullable();

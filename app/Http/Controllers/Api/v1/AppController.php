@@ -46,6 +46,32 @@ class AppController extends Controller
         }
         return new JsonResponse(['message'=>'Data tidak valid'], 500);
     }
+    public function store_banner(Request $request)
+    {
+        $data = App::find(1);
+        $old_path = '';
+        // hapus foto lama jika ada
+        if (!empty($data)) {
+            $old_path = $data->banner;
+            if (!empty($old_path)) {
+                Storage::delete('public/'.$old_path);
+            }
+
+            if ($request->hasFile('banner')) {
+                $request->validate([
+                    'banner'=>'required|image|mimes:jpeg,png,jpg'
+                ]);
+                $path = $request->file('banner')->store('images', 'public');
+                $data->banner = $path;
+                $saved = $data->save();
+                if (!$saved) {
+                    return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                }
+                return new JsonResponse(['message'=>'success'], 201);
+            }
+        }
+        return new JsonResponse(['message'=>'Data tidak valid'], 500);
+    }
     public function store_image_section_one(Request $request)
     {
         $data = App::first();
