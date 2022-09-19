@@ -29,7 +29,17 @@ class BeritaController extends Controller
        $data = Berita::with(['categories'])
        ->where('status', 2)
        ->filter(request(['q','category']))
-       ->latest()->limit(11)->get();
+       ->latest()->limit(8)->get();
+       return new JsonResponse($data);
+    }
+    public function web_popular()
+    {
+       $data = Berita::query()
+       ->withCount('berita_views')
+       ->where('status', 2)
+       ->orderBy('berita_views_count', 'desc')
+       ->limit(6)
+       ->get();
        return new JsonResponse($data);
     }
     public function web_content()

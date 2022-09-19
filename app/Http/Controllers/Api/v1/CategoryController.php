@@ -31,7 +31,7 @@ class CategoryController extends Controller
 
         //  NEW
         } else {
-            $saved = Category::updateOrCreate(['nama'=>$request->nama]);
+            $saved = Category::updateOrCreate(['nama'=>$request->nama, 'url'=> $request->url]);
             if (!$saved) {
                 return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
             }

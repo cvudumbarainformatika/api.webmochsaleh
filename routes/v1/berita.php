@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/berita/data_beranda', [BeritaController::class, 'web_beranda']);
+Route::get('/berita/web_popular', [BeritaController::class, 'web_popular']);
 Route::get('/berita/web_content', [BeritaController::class, 'web_content']);
 Route::get('/berita/kota', [ScrapperController::class, 'index']);
 
