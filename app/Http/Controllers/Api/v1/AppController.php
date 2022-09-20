@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\AppResource;
 use App\Models\App;
+use App\Models\Kunjungan;
 use App\Models\Staf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ class AppController extends Controller
     public function header()
     {
         $data = App::with(['staf'])->find(1);
+        $clientIP = request()->ip();
+        Kunjungan::updateOrCreate(['ip'=>$clientIP],['agent'=> request()->header('User-Agent')]);
         return new AppResource($data);
     }
 
