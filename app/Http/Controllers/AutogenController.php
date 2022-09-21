@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
+use App\Models\Kunjungan;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -43,6 +46,21 @@ class AutogenController extends Controller
         // $upDir = 'uploads' . DIRECTORY_SEPARATOR . Carbon::now()->toDateString() . DIRECTORY_SEPARATOR;
         // Storage::makeDirectory($upDir);
         // echo $upDir;
-        echo url('/')."/storage";
+        // echo url('/')."/storage";
+        $now = date('Y-m-d');
+        $kunjungan = Kunjungan::selectRaw('id')->get()->count();
+        $view_hr_ini = Kunjungan::selectRaw('id,ip,agent,created_at')
+                    ->whereDate('created_at', $now)->get()->count();
+        $berita = Berita::selectRaw('id')->get()->count();
+        $user = User::selectRaw('id')->get()->count();
+
+        return response()->json(
+            [
+                'kunjungan'=>$kunjungan,
+                'view_hr_ini'=>$view_hr_ini,
+                'berita'=>$berita,
+                'user'=>$user,
+            ]
+        );
     }
 }
