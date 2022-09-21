@@ -60,6 +60,7 @@ class AutogenController extends Controller
                 'view_hr_ini'=>$view_hr_ini,
                 'berita'=>$berita,
                 'user'=>$user,
+                'now'=>$now
             ]
         );
     }
