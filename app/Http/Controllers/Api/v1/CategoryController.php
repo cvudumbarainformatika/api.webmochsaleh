@@ -46,6 +46,8 @@ class CategoryController extends Controller
         $kat = KategoriBerita::where('category_id', $request->id)->first();
         if (!$kat) {
             $saved = $data->delete();
+            $user = $request->user();
+            $user->log("Menghapus Data Category {$data->nama}");
             if (!$saved) {
                 return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
             }

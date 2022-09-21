@@ -76,6 +76,8 @@ class CarouselController extends Controller
         $data = Carousel::find($request->id);
         if ($data) {
             $del = $data->delete();
+            $user = $request->user();
+            $user->log("Menghapus Data Carousel {$data->title}");
             if (!$del) {
                 return new JsonResponse(['message'=>'Data tidak terhapus'], 500);
             }

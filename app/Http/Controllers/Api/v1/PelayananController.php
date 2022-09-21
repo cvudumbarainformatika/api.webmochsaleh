@@ -85,6 +85,8 @@ class PelayananController extends Controller
         $old_path = $data->thumbnail;
         Storage::delete('public/'.$old_path);
         $deleted = $data->forceDelete();
+        $user = $request->user();
+        $user->log("Menghapus Data Pelayanan {$data->nama}");
 
         if (!$deleted) {
             return new JsonResponse(['message'=>'Ada Kesalahan'], 500);

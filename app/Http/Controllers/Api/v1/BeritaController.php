@@ -134,7 +134,8 @@ class BeritaController extends Controller
         $old_path = $data->thumbnail;
         Storage::delete('public/'.$old_path);
         $deleted = $data->forceDelete();
-
+        $user = $request->user();
+        $user->log("Menghapus Data Berita {$data->judul}");
         if (!$deleted) {
             return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
         }
