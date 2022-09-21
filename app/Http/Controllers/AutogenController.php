@@ -50,7 +50,7 @@ class AutogenController extends Controller
         // $now = date('Y-m-d');
         $now = Carbon::today()->toDateString();
         $kunjungan = Kunjungan::selectRaw('id')->get()->count();
-        $view_hr_ini = Kunjungan::whereDate('created_at','=', $now)->get()->count();
+        $view_hr_ini = Kunjungan::whereDate('created_at','>=', $now)->get()->count();
         $berita = Berita::selectRaw('id')->get()->count();
         $user = User::selectRaw('id')->get()->count();
 
