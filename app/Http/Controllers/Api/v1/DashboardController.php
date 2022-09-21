@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $now = date('Y-m-d');
         $kunjungan = Kunjungan::selectRaw('id')->get()->count();
         $view_hr_ini = Kunjungan::selectRaw('id,ip,agent,created_at')
-                    ->whereDate('created_at', $now)->get()->count();
+                    ->where('created_at', $now)->get()->count(); // takmau where date
         $berita = Berita::selectRaw('id')->get()->count();
         $user = User::selectRaw('id')->get()->count();
 
