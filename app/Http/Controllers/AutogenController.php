@@ -47,7 +47,8 @@ class AutogenController extends Controller
         // Storage::makeDirectory($upDir);
         // echo $upDir;
         // echo url('/')."/storage";
-        $now = date('Y-m-d');
+        // $now = date('Y-m-d');
+        $now = Carbon::today()->toDateString();
         $kunjungan = Kunjungan::selectRaw('id')->get()->count();
         $view_hr_ini = Kunjungan::query()
                     ->whereDate('created_at','=', $now)->get();
