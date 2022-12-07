@@ -19,7 +19,7 @@ class AppController extends Controller
     {
         $data = App::with(['staf'])->find(1);
         $clientIP = request()->ip();
-        Kunjungan::updateOrCreate(['ip'=>$clientIP],['agent'=> request()->header('User-Agent')]);
+        Kunjungan::updateOrCreate(['ip' => $clientIP], ['agent' => request()->header('User-Agent')]);
         return new AppResource($data);
     }
 
@@ -31,23 +31,23 @@ class AppController extends Controller
         if (!empty($data)) {
             $old_path = $data->logo;
             if (!empty($old_path)) {
-                Storage::delete('public/'.$old_path);
+                Storage::delete('public/' . $old_path);
             }
 
             if ($request->hasFile('logo')) {
                 $request->validate([
-                    'logo'=>'required|image|mimes:jpeg,png,jpg'
+                    'logo' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $path = $request->file('logo')->store('images', 'public');
                 $data->logo = $path;
                 $saved = $data->save();
                 if (!$saved) {
-                    return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                    return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
                 }
-                return new JsonResponse(['message'=>'success'], 201);
+                return new JsonResponse(['message' => 'success'], 201);
             }
         }
-        return new JsonResponse(['message'=>'Data tidak valid'], 500);
+        return new JsonResponse(['message' => 'Data tidak valid'], 500);
     }
     public function store_banner(Request $request)
     {
@@ -57,23 +57,23 @@ class AppController extends Controller
         if (!empty($data)) {
             $old_path = $data->banner;
             if (!empty($old_path)) {
-                Storage::delete('public/'.$old_path);
+                Storage::delete('public/' . $old_path);
             }
 
             if ($request->hasFile('banner')) {
                 $request->validate([
-                    'banner'=>'required|image|mimes:jpeg,png,jpg'
+                    'banner' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $path = $request->file('banner')->store('images', 'public');
                 $data->banner = $path;
                 $saved = $data->save();
                 if (!$saved) {
-                    return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                    return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
                 }
-                return new JsonResponse(['message'=>'success'], 201);
+                return new JsonResponse(['message' => 'success'], 201);
             }
         }
-        return new JsonResponse(['message'=>'Data tidak valid'], 500);
+        return new JsonResponse(['message' => 'Data tidak valid'], 500);
     }
     public function store_image_section_one(Request $request)
     {
@@ -86,91 +86,83 @@ class AppController extends Controller
         if (!empty($data)) {
             $old_path = $data->section_one['image'];
             if (!empty($old_path)) {
-                Storage::delete('public/'.$old_path);
+                Storage::delete('public/' . $old_path);
             }
 
             $path = null;
             if ($request->hasFile('image')) {
                 $request->validate([
-                    'image'=>'required|image|mimes:jpeg,png,jpg'
+                    'image' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $path = $request->file('image')->store('images', 'public');
             }
             // $request = new \Illuminate\Http\Request();
             $data1 = [];
-            foreach($request->input('point_1_data') as $d)
-            {
-                if(! empty($d))
-                {
+            foreach ($request->input('point_1_data') as $d) {
+                if (!empty($d)) {
                     $data1[] = $d;
                 }
             }
             $data2 = [];
-            foreach($request->input('point_2_data') as $d2)
-            {
-                if(! empty($d2))
-                {
+            foreach ($request->input('point_2_data') as $d2) {
+                if (!empty($d2)) {
                     $data2[] = $d2;
                 }
             }
             // return response()->json($data1);
             $data->section_one = array(
-                'image'=> $path,
-                'point_1'=>array(
-                    'title'=>$request->input('point_1_title'),
-                    'data'=> $data1,
+                'image' => $path,
+                'point_1' => array(
+                    'title' => $request->input('point_1_title'),
+                    'data' => $data1,
                 ),
-                'point_2'=>[
-                    'title'=>$request->input('point_2_title'),
-                    'data'=> $data2,
+                'point_2' => [
+                    'title' => $request->input('point_2_title'),
+                    'data' => $data2,
                 ],
             );
             $saved = $data->save();
             if (!$saved) {
-                return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
             }
-            return new JsonResponse(['message'=>'success', 'data' =>$data->section_one['point_2']['data']], 201);
+            return new JsonResponse(['message' => 'success', 'data' => $data->section_one['point_2']['data']], 201);
         }
-        return new JsonResponse(['message'=>'Data tidak valid'], 500);
+        return new JsonResponse(['message' => 'Data tidak valid'], 500);
     }
 
     public function store_section_two(Request $request)
     {
         $data = App::first();
         $arr = [];
-        foreach($request->section_two as $key)
-        {
-            if(! empty($key))
-            {
-                $arr[]=$key;
+        foreach ($request->section_two as $key) {
+            if (!empty($key)) {
+                $arr[] = $key;
             }
         }
 
         $data->section_two = $arr;
         $saved = $data->save();
         if (!$saved) {
-            return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+            return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
         }
-        return new JsonResponse(['message'=>'success'], 201);
+        return new JsonResponse(['message' => 'success'], 201);
     }
     public function store_themes(Request $request)
     {
         $data = App::first();
         $arr = [];
-        foreach($request->themes as $key)
-        {
-            if(! empty($key))
-            {
-                $arr[]=$key;
+        foreach ($request->themes as $key) {
+            if (!empty($key)) {
+                $arr[] = $key;
             }
         }
 
         $data->themes = $arr;
         $saved = $data->save();
         if (!$saved) {
-            return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+            return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
         }
-        return new JsonResponse(['message'=>'success'], 201);
+        return new JsonResponse(['message' => 'success'], 201);
     }
 
 
@@ -183,11 +175,11 @@ class AppController extends Controller
             $data = Staf::find($request->id);
             if ($request->hasFile('image')) {
                 $request->validate([
-                    'image'=>'required|image|mimes:jpeg,png,jpg'
+                    'image' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $old_path = $data->image;
                 if (!empty($old_path)) {
-                    Storage::delete('public/'.$old_path);
+                    Storage::delete('public/' . $old_path);
                 }
                 $path = $request->file('image')->store('images', 'public');
                 $data->image = $path;
@@ -196,28 +188,27 @@ class AppController extends Controller
             $data->jabatan = $request->jabatan;
             $saved = $data->save();
             if (!$saved) {
-                return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
             }
-            return new JsonResponse(['message'=>'success'], 201);
+            return new JsonResponse(['message' => 'success'], 201);
         } else {
             // tambah data
             $data = new Staf();
             if ($request->hasFile('image')) {
                 $request->validate([
-                    'image'=>'required|image|mimes:jpeg,png,jpg'
+                    'image' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $path = $request->file('image')->store('images', 'public');
                 $data->image = $path;
             }
             $data->nama = $request->nama;
             $data->jabatan = $request->jabatan;
-            $data->app_id =1;
+            $data->app_id = 1;
             $saved = $data->save();
             if (!$saved) {
-                return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
             }
-            return new JsonResponse(['message'=>'success, Data tersipan'], 201);
-
+            return new JsonResponse(['message' => 'success, Data tersipan'], 201);
         }
     }
 
@@ -227,9 +218,9 @@ class AppController extends Controller
         if ($data) {
             $del = $data->delete();
             if (!$del) {
-                return new JsonResponse(['message'=>'Data tidak terhapus'], 500);
+                return new JsonResponse(['message' => 'Data tidak terhapus'], 500);
             }
-            return new JsonResponse(['message'=>'success terhapus'], 201);
+            return new JsonResponse(['message' => 'success terhapus'], 201);
         }
     }
 
@@ -239,6 +230,7 @@ class AppController extends Controller
 
         $data->title = $request->title;
         $data->desc = $request->desc;
+        $data->alamat = $request->alamat;
         $data->phone = $request->phone;
         $data->email = $request->email;
         $data->link_fb = $request->link_fb;
@@ -247,8 +239,8 @@ class AppController extends Controller
         $data->link_map = $request->link_map;
         $saved = $data->save();
         if (!$saved) {
-            return new JsonResponse(['message'=>'Data tidak valid'], 500);
+            return new JsonResponse(['message' => 'Data tidak valid'], 500);
         }
-        return new JsonResponse(['message'=>'success'], 201);
+        return new JsonResponse(['message' => 'success'], 201);
     }
 }
