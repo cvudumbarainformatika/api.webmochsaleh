@@ -18,42 +18,42 @@ class BeritaController extends Controller
 {
     public function index()
     {
-       $data = Berita::latest()->with(['categories'])
-       ->filter(request(['q','status']))
-       ->paginate(12);
-       return new JsonResponse($data);
+        $data = Berita::latest()->with(['categories'])
+            ->filter(request(['q', 'status']))
+            ->paginate(12);
+        return new JsonResponse($data);
     }
 
     public function web_beranda()
     {
-       $data = Berita::with(['categories'])
-       ->where('status', 2)
-       ->filter(request(['q','category']))
-       ->latest()->limit(8)->get();
-       return new JsonResponse($data);
+        $data = Berita::with(['categories'])
+            ->where('status', 2)
+            ->filter(request(['q', 'category']))
+            ->latest('tanggal')->limit(8)->get();
+        return new JsonResponse($data);
     }
     public function web_popular()
     {
-       $data = Berita::query()
-       ->withCount('berita_views')
-       ->where('status', 2)
-       ->orderBy('berita_views_count', 'desc')
-       ->limit(6)
-       ->get();
-       return new JsonResponse($data);
+        $data = Berita::query()
+            ->withCount('berita_views')
+            ->where('status', 2)
+            ->orderBy('berita_views_count', 'desc')
+            ->limit(6)
+            ->get();
+        return new JsonResponse($data);
     }
     public function web_content()
     {
-       $data = Berita::query()
-       ->withCount('berita_views')
-       ->where('status', 2)
-       ->filter(request(['q']))
-       ->latest()->first();
+        $data = Berita::query()
+            ->withCount('berita_views')
+            ->where('status', 2)
+            ->filter(request(['q']))
+            ->latest('tanggal')->first();
 
-       $clientIP = request()->ip();
-       $data->berita_views()->firstOrCreate(['ip'=>$clientIP, 'berita_id'=>$data->id],['agent'=> request()->header('User-Agent')]);
+        $clientIP = request()->ip();
+        $data->berita_views()->firstOrCreate(['ip' => $clientIP, 'berita_id' => $data->id], ['agent' => request()->header('User-Agent')]);
 
-       return new JsonResponse($data);
+        return new JsonResponse($data);
     }
     public function store(Request $request)
     {
@@ -67,14 +67,14 @@ class BeritaController extends Controller
 
             if ($request->hasFile('thumbnail')) {
                 $request->validate([
-                    'thumbnail'=>'required|image|mimes:jpeg,png,jpg'
+                    'thumbnail' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $path = $request->file('thumbnail')->store('thumbnail', 'public');
             }
 
             $request->validate([
                 // 'slug'=> [Rule::unique('beritas')->ignore($request->id)]
-                'slug'=> 'unique:beritas,id,'.$request->id
+                'slug' => 'unique:beritas,id,' . $request->id
             ]);
 
             if ($request->has('id')) {
@@ -82,7 +82,7 @@ class BeritaController extends Controller
 
                 if ($request->hasFile('thumbnail')) {
                     $old_path = $data->thumbnail;
-                    Storage::delete('public/'.$old_path);
+                    Storage::delete('public/' . $old_path);
 
                     $data->thumbnail = $path;
                 }
@@ -90,18 +90,19 @@ class BeritaController extends Controller
                 $data->judul = $request->judul;
                 $data->slug = $request->slug;
                 $data->content = $request->content;
+                $data->tanggal = $request->tanggal;
                 $saved = $data->save();
 
                 $data->categories()->sync($request->category_id);
-
-            }else {
+            } else {
                 $saved = Berita::create(
-                [
-                    'judul'=> $request->judul,
-                    'slug'=> $request->slug,
-                    'content'=> $request->content,
-                    'thumbnail'=> $path
-                ]);
+                    [
+                        'judul' => $request->judul,
+                        'slug' => $request->slug,
+                        'content' => $request->content,
+                        'thumbnail' => $path
+                    ]
+                );
                 $saved->categories()->sync($request->category_id);
             }
 
@@ -109,37 +110,34 @@ class BeritaController extends Controller
         });
 
         if (!$saved) {
-            return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
+            return new JsonResponse(['message' => 'Ada Kesalahan'], 500);
         }
-        return new JsonResponse(['message'=>'success'], 201);
-
-
+        return new JsonResponse(['message' => 'success'], 201);
     }
 
     public function update_status(Request $request)
     {
         $data = Berita::find($request->id);
-        $saved=$data->update([
-            'status'=>$request->status
+        $saved = $data->update([
+            'status' => $request->status
         ]);
         if (!$saved) {
-            return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
+            return new JsonResponse(['message' => 'Ada Kesalahan'], 500);
         }
-        return new JsonResponse(['message'=>'success'], 201);
+        return new JsonResponse(['message' => 'success'], 201);
     }
 
     public function destroy(Request $request)
     {
         $data = Berita::query()->find($request->id);
         $old_path = $data->thumbnail;
-        Storage::delete('public/'.$old_path);
+        Storage::delete('public/' . $old_path);
         $deleted = $data->forceDelete();
         $user = $request->user();
         $user->log("Menghapus Data Berita {$data->judul}");
         if (!$deleted) {
-            return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
+            return new JsonResponse(['message' => 'Ada Kesalahan'], 500);
         }
-        return new JsonResponse(['message'=>'success terhapus'], 201);
-
+        return new JsonResponse(['message' => 'success terhapus'], 201);
     }
 }
