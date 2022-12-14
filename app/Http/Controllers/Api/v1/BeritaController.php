@@ -100,6 +100,7 @@ class BeritaController extends Controller
                         'judul' => $request->judul,
                         'slug' => $request->slug,
                         'content' => $request->content,
+                        'tanggal' => $request->tanggal,
                         'thumbnail' => $path
                     ]
                 );
