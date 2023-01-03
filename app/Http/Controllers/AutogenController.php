@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Gallery;
 use App\Models\Kunjungan;
 use App\Models\User;
 use Carbon\Carbon;
@@ -16,28 +17,30 @@ class AutogenController extends Controller
 
     public function index()
     {
-        $tableName = 'galleries';
-        $data = Schema::getColumnListing($tableName);
+        // $tableName = 'galleries';
+        // $data = Schema::getColumnListing($tableName);
 
-        echo '<br>';
-        echo '====================================== RESOURCE ============================';
-        echo '<br>';
-        foreach ($data as $key) {
-            echo '\'' . $key . '\' => $this->' . $key . ',<br>';
-        }
-        echo '<br>';
-        echo '====================================== INI UNTUK request->only ============================';
-        echo '<br>';
-        foreach ($data as $key) {
-            echo '\'' . $key . '\',';
-        }
-        echo '<br>';
-        echo '====================================== INI UNTUK QUASAR ============================';
-        echo '<br>';
-        foreach ($data as $key) {
-            echo $key . ': "", <br>';
-        }
-        echo '<br>';
+        // echo '<br>';
+        // echo '====================================== RESOURCE ============================';
+        // echo '<br>';
+        // foreach ($data as $key) {
+        //     echo '\'' . $key . '\' => $this->' . $key . ',<br>';
+        // }
+        // echo '<br>';
+        // echo '====================================== INI UNTUK request->only ============================';
+        // echo '<br>';
+        // foreach ($data as $key) {
+        //     echo '\'' . $key . '\',';
+        // }
+        // echo '<br>';
+        // echo '====================================== INI UNTUK QUASAR ============================';
+        // echo '<br>';
+        // foreach ($data as $key) {
+        //     echo $key . ': "", <br>';
+        // }
+        // echo '<br>';
+        $data = Gallery::all();
+        return response()->json($data);
     }
 
     public function coba()
@@ -50,17 +53,17 @@ class AutogenController extends Controller
         // $now = date('Y-m-d');
         $now = Carbon::today()->toDateString();
         $kunjungan = Kunjungan::selectRaw('id')->get()->count();
-        $view_hr_ini = Kunjungan::whereDate('created_at','>=', $now)->get()->count();
+        $view_hr_ini = Kunjungan::whereDate('created_at', '>=', $now)->get()->count();
         $berita = Berita::selectRaw('id')->get()->count();
         $user = User::selectRaw('id')->get()->count();
 
         return response()->json(
             [
-                'kunjungan'=>$kunjungan,
-                'view_hr_ini'=>$view_hr_ini,
-                'berita'=>$berita,
-                'user'=>$user,
-                'now'=>$now
+                'kunjungan' => $kunjungan,
+                'view_hr_ini' => $view_hr_ini,
+                'berita' => $berita,
+                'user' => $user,
+                'now' => $now
             ]
         );
     }

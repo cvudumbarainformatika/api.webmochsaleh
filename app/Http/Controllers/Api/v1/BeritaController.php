@@ -32,6 +32,14 @@ class BeritaController extends Controller
             ->latest('tanggal')->limit(8)->get();
         return new JsonResponse($data);
     }
+    public function web_paginate()
+    {
+        $data = Berita::with(['categories'])
+            ->where('status', 2)
+            ->filter(request(['q', 'category']))
+            ->latest('tanggal')->paginate(8);
+        return new JsonResponse($data);
+    }
     public function web_popular()
     {
         $data = Berita::query()
