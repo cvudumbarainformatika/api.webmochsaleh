@@ -19,11 +19,12 @@ class LottieController extends Controller
     public function upload(Request $request)
     {
 
-        if ($request->hasFile('images')) {
-            // return response()->json($request->images);
-            $files = $request->file('images');
+        if ($request->hasFile('jsons')) {
+
+            $files = $request->file('jsons');
 
             if (!empty($files)) {
+                // return response()->json($request->all());
 
                 for ($i = 0; $i < count($files); $i++) {
                     $file = $files[$i];
