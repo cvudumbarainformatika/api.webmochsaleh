@@ -39,8 +39,15 @@ class AutogenController extends Controller
         //     echo $key . ': "", <br>';
         // }
         // echo '<br>';
-        $data = Gallery::all();
-        return response()->json($data);
+        // $data = Gallery::all();
+        // return response()->json($data);
+        // $url = Storage::url('lottie/4565-heartbeat-medical.json');
+        // return $url;
+        // echo asset('storage/lottie/4565-heartbeat-medical.json');
+        $filename = "4565-heartbeat-medical";
+        $path = storage_path() . "/app/public/lottie/${filename}.json";
+        $json = json_decode(file_get_contents($path), true);
+        return $json;
     }
 
     public function coba()
