@@ -13,22 +13,22 @@ class PelayananController extends Controller
 {
     public function index()
     {
-       $data = Pelayanan::latest()
-    //    ->with(['categories'])
-    //    ->filter(request(['q','status']))
-       ->paginate(12);
-       return new JsonResponse($data);
+        $data = Pelayanan::latest(request('order_by'))
+            //    ->with(['categories'])
+            //    ->filter(request(['q','status']))
+            ->paginate(request('per_page'));
+        return new JsonResponse($data);
     }
 
     public function web_content()
     {
-       $data = Pelayanan::query()
-       ->get();
+        $data = Pelayanan::query()
+            ->get();
 
-    //    $clientIP = request()->ip();
-    //    $data->berita_views()->firstOrCreate(['ip'=>$clientIP, 'berita_id'=>$data->id],['agent'=> request()->header('User-Agent')]);
+        //    $clientIP = request()->ip();
+        //    $data->berita_views()->firstOrCreate(['ip'=>$clientIP, 'berita_id'=>$data->id],['agent'=> request()->header('User-Agent')]);
 
-       return new JsonResponse($data);
+        return new JsonResponse($data);
     }
 
     public function store(Request $request)
@@ -40,13 +40,13 @@ class PelayananController extends Controller
 
             if ($request->hasFile('thumbnail')) {
                 $request->validate([
-                    'thumbnail'=>'required|image|mimes:jpeg,png,jpg'
+                    'thumbnail' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $path = $request->file('thumbnail')->store('thumbnail', 'public');
             }
 
             $request->validate([
-                'slug'=> 'unique:pelayanans,id,'.$request->id
+                'slug' => 'unique:pelayanans,id,' . $request->id
             ]);
 
             if ($request->has('id')) {
@@ -54,7 +54,7 @@ class PelayananController extends Controller
 
                 if ($request->hasFile('thumbnail')) {
                     $old_path = $data->thumbnail;
-                    Storage::delete('public/'.$old_path);
+                    Storage::delete('public/' . $old_path);
 
                     $data->thumbnail = $path;
                 }
@@ -74,24 +74,23 @@ class PelayananController extends Controller
             return $saved;
         });
         if (!$saved) {
-            return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
+            return new JsonResponse(['message' => 'Ada Kesalahan'], 500);
         }
-        return new JsonResponse(['message'=>'success'], 201);
+        return new JsonResponse(['message' => 'success'], 201);
     }
 
     public function destroy(Request $request)
     {
         $data = Pelayanan::query()->find($request->id);
         $old_path = $data->thumbnail;
-        Storage::delete('public/'.$old_path);
+        Storage::delete('public/' . $old_path);
         $deleted = $data->forceDelete();
         $user = $request->user();
         $user->log("Menghapus Data Pelayanan {$data->nama}");
 
         if (!$deleted) {
-            return new JsonResponse(['message'=>'Ada Kesalahan'], 500);
+            return new JsonResponse(['message' => 'Ada Kesalahan'], 500);
         }
-        return new JsonResponse(['message'=>'success terhapus'], 201);
-
+        return new JsonResponse(['message' => 'success terhapus'], 201);
     }
 }
