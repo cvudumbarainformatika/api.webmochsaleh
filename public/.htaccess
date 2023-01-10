@@ -1,4 +1,6 @@
+
 <IfModule mod_rewrite.c>
+    # Header set Access-Control-Allow-Origin "*"
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
@@ -19,4 +21,4 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-	Header set Access-Control-Allow-Origin "*"
+
