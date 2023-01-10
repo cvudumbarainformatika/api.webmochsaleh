@@ -4,31 +4,21 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pelayanan;
+use App\Models\Submenu;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class PelayananController extends Controller
+class SubmenuController extends Controller
 {
     public function index()
     {
-        $data = Pelayanan::latest(request('order_by'))
-            ->with(['submenu'])
+        $data = Submenu::where('pelayanan_id', request('pelayanan_id'))->latest()
+            // ->with(['submenu'])
             //    ->filter(request(['q','status']))
-            ->paginate(request('per_page'));
-        // ->get();
-        return new JsonResponse($data);
-    }
-
-    public function web_content()
-    {
-        $data = Pelayanan::query()
+            // ->paginate(request('per_page'));
             ->get();
-
-        //    $clientIP = request()->ip();
-        //    $data->berita_views()->firstOrCreate(['ip'=>$clientIP, 'berita_id'=>$data->id],['agent'=> request()->header('User-Agent')]);
-
         return new JsonResponse($data);
     }
 
@@ -39,19 +29,12 @@ class PelayananController extends Controller
             $old_path = null;
             $data = null;
 
-            if ($request->hasFile('thumbnail')) {
-                $request->validate([
-                    'thumbnail' => 'required|image|mimes:jpeg,png,jpg'
-                ]);
-                $path = $request->file('thumbnail')->store('thumbnail', 'public');
-            }
-
             $request->validate([
-                'slug' => 'unique:pelayanans,id,' . $request->id
+                'slug' => 'unique:submenus,id,' . $request->id
             ]);
 
             if ($request->has('id')) {
-                $data = Pelayanan::find($request->id);
+                $data = Submenu::find($request->id);
 
                 if ($request->hasFile('thumbnail')) {
                     $old_path = $data->thumbnail;
@@ -60,7 +43,7 @@ class PelayananController extends Controller
                     $data->thumbnail = $path;
                 }
             } else {
-                $data = new Pelayanan();
+                $data = new Submenu();
                 if ($request->hasFile('thumbnail')) {
                     $data->thumbnail = $path;
                 }
@@ -70,6 +53,7 @@ class PelayananController extends Controller
             $data->nama = $request->nama;
             $data->content = $request->content;
             $data->animation = $request->animation;
+            $data->pelayanan_id = $request->pelayanan_id;
 
             $saved = $data->save();
 
@@ -83,7 +67,7 @@ class PelayananController extends Controller
 
     public function destroy(Request $request)
     {
-        $data = Pelayanan::query()->find($request->id);
+        $data = Submenu::query()->find($request->id);
         $old_path = $data->thumbnail;
         Storage::delete('public/' . $old_path);
         $deleted = $data->forceDelete();

@@ -13,7 +13,9 @@ class LottieController extends Controller
 {
     public function index()
     {
-        $data = Lottie::latest()->paginate(request('per_page'));
+        $data = Lottie::latest()
+            ->filter(request(['q']))
+            ->paginate(request('per_page'));
         return LottieResource::collection($data);
     }
     public function upload(Request $request)
