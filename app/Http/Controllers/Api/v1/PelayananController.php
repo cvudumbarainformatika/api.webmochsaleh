@@ -13,7 +13,8 @@ class PelayananController extends Controller
 {
     public function index()
     {
-        $data = Pelayanan::latest(request('order_by'))
+        $data = Pelayanan::where('flag', request('flag'))
+            ->latest(request('order_by'))
             ->with(['submenu'])
             //    ->filter(request(['q','status']))
             ->paginate(request('per_page'));
@@ -23,7 +24,7 @@ class PelayananController extends Controller
 
     public function web_content()
     {
-        $data = Pelayanan::query()
+        $data = Pelayanan::with(['submenu'])
             ->get();
 
         //    $clientIP = request()->ip();
@@ -70,6 +71,7 @@ class PelayananController extends Controller
             $data->nama = $request->nama;
             $data->content = $request->content;
             $data->animation = $request->animation;
+            $data->flag = $request->flag;
 
             $saved = $data->save();
 
