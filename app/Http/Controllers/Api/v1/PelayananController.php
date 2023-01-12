@@ -24,7 +24,8 @@ class PelayananController extends Controller
 
     public function web_content()
     {
-        $data = Pelayanan::with(['submenu'])
+        $data = Pelayanan::where('flag', request('flag'))
+            ->with(['submenu'])
             ->get();
 
         //    $clientIP = request()->ip();
