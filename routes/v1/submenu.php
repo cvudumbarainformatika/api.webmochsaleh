@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// Route::get('/submenu/web_content', [SubmenuController::class, 'web_content']);
+Route::get('/submenu/web_content', [SubmenuController::class, 'web_content']);
 // Route::get('/berita/kota', [ScrapperController::class, 'index']);
 
 Route::middleware('auth:api')

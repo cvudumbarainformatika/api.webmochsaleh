@@ -22,12 +22,31 @@ class SubmenuController extends Controller
         return new JsonResponse($data);
     }
 
+    public function web_content()
+    {
+        $data = Submenu::where('slug', request('slug'))
+            ->with(['pelayanan.submenu'])
+            ->first();
+
+        //    $clientIP = request()->ip();
+        //    $data->berita_views()->firstOrCreate(['ip'=>$clientIP, 'berita_id'=>$data->id],['agent'=> request()->header('User-Agent')]);
+
+        return new JsonResponse($data);
+    }
+
     public function store(Request $request)
     {
         $saved = DB::transaction(function () use ($request) {
             $path = null;
             $old_path = null;
             $data = null;
+
+            if ($request->hasFile('thumbnail')) {
+                $request->validate([
+                    'thumbnail' => 'required|image|mimes:jpeg,png,jpg'
+                ]);
+                $path = $request->file('thumbnail')->store('thumbnail', 'public');
+            }
 
             $request->validate([
                 'slug' => 'unique:submenus,id,' . $request->id
