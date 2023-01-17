@@ -21,6 +21,7 @@ class CreateSubmenusTable extends Migration
             $table->text('thumbnail')->nullable();
             $table->string('animation')->nullable();
             $table->unsignedBigInteger('pelayanan_id')->nullable();
+            $table->integer('urut')->nullable();
             $table->timestamps();
         });
     }
