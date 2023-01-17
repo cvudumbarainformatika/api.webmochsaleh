@@ -13,15 +13,13 @@ class CarouselController extends Controller
 {
     public function index()
     {
-        $data=Carousel::where('status', 1)->latest()->paginate(8);
+        $data = Carousel::where('status', 1)->latest()->paginate(8);
         return CarouselResource::collection($data);
-
     }
     public function manage()
     {
-        $data=Carousel::latest()->paginate(request('per_page'));
+        $data = Carousel::latest()->paginate(request('per_page'));
         return CarouselResource::collection($data);
-
     }
     public function store(Request $request)
     {
@@ -33,29 +31,31 @@ class CarouselController extends Controller
             // $data->image = null;
             if ($request->hasFile('image')) {
                 $request->validate([
-                    'image'=>'required|image|mimes:jpeg,png,jpg'
+                    'image' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $old_path = $data->image;
                 if (!empty($old_path)) {
-                    Storage::delete('public/'.$old_path);
+                    Storage::delete('public/' . $old_path);
                 }
                 $path = $request->file('image')->store('images', 'public');
                 $data->image = $path;
             }
             $data->title = $request->title;
             $data->desc = $request->desc;
+            $data->animation = $request->animation;
+            // $data->gift = $request->gift;
+
             $saved = $data->save();
             if (!$saved) {
-                return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
             }
-            return new JsonResponse(['message'=>'success'], 201);
-
+            return new JsonResponse(['message' => 'success'], 201);
         } else {
             // save
             $data = new Carousel();
             if ($request->hasFile('image')) {
                 $request->validate([
-                    'image'=>'required|image|mimes:jpeg,png,jpg'
+                    'image' => 'required|image|mimes:jpeg,png,jpg'
                 ]);
                 $path = $request->file('image')->store('images', 'public');
                 $data->image = $path;
@@ -63,13 +63,14 @@ class CarouselController extends Controller
 
             $data->title = $request->title;
             $data->desc = $request->desc;
+            $data->animation = $request->animation;
+            // $data->gift = $request->gift;
             $saved = $data->save();
             if (!$saved) {
-                return new JsonResponse(['message'=>'Data tidak tersimpan'], 500);
+                return new JsonResponse(['message' => 'Data tidak tersimpan'], 500);
             }
-            return new JsonResponse(['message'=>'success'], 201);
+            return new JsonResponse(['message' => 'success'], 201);
         }
-
     }
     public function destroy(Request $request)
     {
@@ -79,9 +80,9 @@ class CarouselController extends Controller
             $user = $request->user();
             $user->log("Menghapus Data Carousel {$data->title}");
             if (!$del) {
-                return new JsonResponse(['message'=>'Data tidak terhapus'], 500);
+                return new JsonResponse(['message' => 'Data tidak terhapus'], 500);
             }
-            return new JsonResponse(['message'=>'success terhapus'], 201);
+            return new JsonResponse(['message' => 'success terhapus'], 201);
         }
     }
 }
