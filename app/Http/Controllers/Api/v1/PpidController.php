@@ -23,6 +23,7 @@ class PpidController extends Controller
     public function web_content()
     {
         $data = Ppid::query()
+        ->with(['submenu'])
             ->get();
 
         //    $clientIP = request()->ip();
