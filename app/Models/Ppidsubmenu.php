@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ppid extends Model
+class Ppidsubmenu extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $table = 'ppidsubmenus';
 
-    public function submenu()
+    public function ppid()
     {
-        return $this->hasMany(Ppidsubmenu::class); 
+        return $this->belongsTo(Ppid::class);
     }
 }

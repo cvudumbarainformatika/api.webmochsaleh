@@ -16,7 +16,7 @@ class PelayananController extends Controller
         $data = Pelayanan::where('flag', request('flag'))
             ->latest(request('order_by'))
             ->with(['submenu'])
-            //    ->filter(request(['q','status']))
+            //    ->filter(request(['q','status'])) 
             ->paginate(request('per_page'));
         // ->get();
         return new JsonResponse($data);
