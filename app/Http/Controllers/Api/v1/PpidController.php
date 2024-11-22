@@ -14,7 +14,7 @@ class PpidController extends Controller
     public function index()
     {
         $data = Ppid::latest()
-            //    ->with(['categories'])
+        ->with(['submenu'])
             //    ->filter(request(['q','status']))
             ->paginate(12);
         return new JsonResponse($data);
