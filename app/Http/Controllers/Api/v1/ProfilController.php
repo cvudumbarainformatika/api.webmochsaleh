@@ -23,6 +23,7 @@ class ProfilController extends Controller
     public function web_content()
     {
        $data = Profil::query()
+       ->orderBy('urut', 'asc')
        ->get();
 
     //    $clientIP = request()->ip();
