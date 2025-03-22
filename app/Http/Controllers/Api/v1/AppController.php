@@ -236,6 +236,7 @@ class AppController extends Controller
         $data->link_fb = $request->link_fb;
         $data->link_instagram = $request->link_instagram;
         $data->link_youtube = $request->link_youtube;
+        $data->link_tiktok = $request->link_tiktok;
         $data->link_map = $request->link_map;
         $saved = $data->save();
         if (!$saved) {
