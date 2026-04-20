@@ -38,8 +38,13 @@ RUN apk del $PHPIZE_DEPS \
 # Copy existing application directory permissions
 COPY . /var/www/html
 
-# Ensure storage and bootstrap/cache are writable
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Ensure storage and bootstrap/cache directories exist and are writable
+RUN mkdir -p storage/framework/sessions \
+    && mkdir -p storage/framework/views \
+    && mkdir -p storage/framework/cache \
+    && mkdir -p storage/logs \
+    && mkdir -p bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 9000
 CMD ["php-fpm"]
