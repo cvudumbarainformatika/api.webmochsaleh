@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\v1\ScrapperController;
 use App\Http\Controllers\AutogenController;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,20 +29,33 @@ Route::get('/scrapper/coba', [ScrapperController::class, 'index']);
 
 
 Route::get('/img-webp/{filename}', function ($filename) {
-    $sourcePath = storage_path("app/public/images/{$filename}");
+   $sourcePath = storage_path("app/public/images/{$filename}");
 
-    if (!file_exists($sourcePath)) {
+    if (!File::exists($sourcePath)) {
         abort(404, 'Original image not found.');
     }
 
     $nameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
-    $webpPath = storage_path("app/public/images-webp/{$nameWithoutExt}.webp");
+    $webpDir = storage_path("app/public/images-webp");
+    $webpPath = "{$webpDir}/{$nameWithoutExt}.webp";
 
-    if (!file_exists($webpPath)) {
-        // Konversi ke webp jika belum ada
-        $img = Image::make($sourcePath)->encode('webp', 80);
-        $img->save($webpPath);
+    // Buat folder jika belum ada
+    if (!File::exists($webpDir)) {
+        File::makeDirectory($webpDir, 0755, true);
     }
 
-    return response()->file($webpPath, ['Content-Type' => 'image/webp']);
+    // Konversi jika belum tersedia
+    if (!File::exists($webpPath)) {
+        try {
+            $img = Image::make($sourcePath)->encode('webp', 80);
+            $img->save($webpPath);
+        } catch (\Exception $e) {
+            abort(500, 'Failed to convert image: ' . $e->getMessage());
+        }
+    }
+
+    return Response::file($webpPath, [
+        'Content-Type' => 'image/webp',
+        'Cache-Control' => 'public, max-age=2592000', // 30 hari cache
+    ]);
 });
