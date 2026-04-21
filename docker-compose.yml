@@ -45,6 +45,7 @@ services:
 
 networks:
   rsud-network:
+    name: rsud-network
     driver: bridge
 
 volumes:
