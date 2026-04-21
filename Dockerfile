@@ -28,14 +28,13 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     intl \
     opcache
 
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 # Set working directory
 WORKDIR /var/www/html
 
-# Clean up
-RUN apk del $PHPIZE_DEPS \
-    && rm -rf /tmp/* /var/cache/apk/*
-
-# Copy existing application directory permissions
+# Copy application files
 COPY . /var/www/html
 
 # Ensure storage and bootstrap/cache directories exist and are writable
@@ -44,7 +43,14 @@ RUN mkdir -p storage/framework/sessions \
     && mkdir -p storage/framework/cache \
     && mkdir -p storage/logs \
     && mkdir -p bootstrap/cache \
-    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+    && chown -R www-data:www-data /var/www/html
+
+# Install dependency PHP
+RUN composer install --no-interaction --no-dev --optimize-autoloader --ignore-platform-reqs
+
+# Clean up
+RUN apk del $PHPIZE_DEPS \
+    && rm -rf /tmp/* /var/cache/apk/*
 
 EXPOSE 9000
 CMD ["php-fpm"]
