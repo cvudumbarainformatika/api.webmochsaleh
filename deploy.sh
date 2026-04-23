@@ -29,6 +29,10 @@ rsync -avz --progress \
 echo "🐳 Restarting Docker Containers on Server..."
 
 # Execute docker command on server
-ssh $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && docker compose up -d --build"
+ssh $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_PATH && \
+    docker compose up -d --build && \
+    echo 'sasa0102sa' | sudo -S chmod -R 777 storage bootstrap/cache && \
+    docker exec api-webrsud-app php artisan config:clear && \
+    docker exec api-webrsud-app php artisan cache:clear"
 
-echo "✅ Deployment Finished!"
+echo "✅ Deployment Finished & System Refreshed!"
